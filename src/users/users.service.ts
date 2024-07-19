@@ -21,6 +21,10 @@ export class UsersService {
     return user;
   }
 
+  async findParticipants(ids: string[]) {
+    return this.userModel.find({ _id: { $in: ids } }).exec();
+  }
+
   toUserResponseDto(user: User): UserResponseDto {
     return {
       id: user.id,

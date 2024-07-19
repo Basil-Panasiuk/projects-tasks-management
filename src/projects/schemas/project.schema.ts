@@ -16,9 +16,6 @@ export class Project extends Document {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
   createdBy: User;
-
-  @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'User' })
-  members: User[];
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(Project);

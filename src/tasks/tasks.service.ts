@@ -10,6 +10,21 @@ export class TasksService {
   constructor(@InjectModel(Task.name) private taskModel: Model<Task>) {}
 
   async create(createTaskDto: CreateTaskDto) {
+    // const membersLength = createProjectDto.members.length;
+    // if (membersLength) {
+    //   console.log('users!!!');
+
+    //   const users = await this.usersService.findParticipants(
+    //     createProjectDto.members,
+    //   );
+    //   console.log('users', users);
+
+    //   if (users.length !== membersLength) {
+    //     throw new BadRequestException({
+    //       message: ['members:Invalid members'],
+    //     });
+    //   }
+    // }
     const createdTask = new this.taskModel(createTaskDto);
     return createdTask.save();
   }

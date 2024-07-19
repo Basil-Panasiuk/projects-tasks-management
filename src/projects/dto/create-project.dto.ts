@@ -1,18 +1,9 @@
-import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateProjectDto {
-  @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'name:The name field is required' })
   name: string;
 
-  @IsString()
   @IsOptional()
   description?: string;
-
-  @IsString()
-  @IsNotEmpty()
-  createdBy: string;
-
-  @IsOptional()
-  members?: string[];
 }
