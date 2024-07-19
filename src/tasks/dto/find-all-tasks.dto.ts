@@ -9,6 +9,7 @@ import {
 import { TaskStatus } from '../enums/task-status.enum';
 import { ObjectIdPattern } from 'src/common/common.constants';
 import { Type } from 'class-transformer';
+import { SortOrder } from 'src/common/enum/sort-order.enum';
 
 export class FindAllTasksDto {
   @IsOptional()
@@ -48,6 +49,6 @@ export class FindAllTasksDto {
   limit: number = 5;
 
   @IsOptional()
-  @IsEnum(['asc', 'desc'], { message: 'sortOrder:The sortOrder is invalid' })
-  sortOrder?: 'asc' | 'desc';
+  @IsEnum(SortOrder, { message: 'sortOrder:The sortOrder is invalid' })
+  sortOrder?: SortOrder;
 }

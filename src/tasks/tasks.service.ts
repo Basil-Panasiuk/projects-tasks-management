@@ -13,6 +13,7 @@ import { UsersService } from 'src/users/users.service';
 import { ProjectsService } from 'src/projects/projects.service';
 import { TaskResponseDto } from './dto/task-response.dto';
 import { FindAllTasksDto } from './dto/find-all-tasks.dto';
+import { SortOrder } from 'src/common/enum/sort-order.enum';
 
 @Injectable()
 export class TasksService {
@@ -61,7 +62,7 @@ export class TasksService {
     const tasks = await this.taskModel
       .find(filter)
       .populate(['project', 'createdBy', 'assignedTo'])
-      .sort({ createdAt: sortOrder === 'desc' ? -1 : 1 })
+      .sort({ createdAt: sortOrder === SortOrder.DESC ? -1 : 1 })
       .skip((page - 1) * limit)
       .limit(limit)
       .exec();
