@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Project } from './schemas/project.schema';
 import { Model } from 'mongoose';
@@ -7,6 +11,7 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 import { UsersService } from 'src/users/users.service';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { ProjectResponseDto } from './dto/project-response.dto';
+import { ObjectIdPattern } from 'src/common/common.constants';
 
 @Injectable()
 export class ProjectsService {
@@ -52,6 +57,7 @@ export class ProjectsService {
   }
 
   async findOne(id: string) {
+    this.validateId(id);
     const project = await this.projectModel
       .findById(id)
       .populate('createdBy')
@@ -63,6 +69,7 @@ export class ProjectsService {
   }
 
   async update(id: string, updateProjectDto: UpdateProjectDto) {
+    this.validateId(id);
     const updatedProject = await this.projectModel
       .findByIdAndUpdate(id, updateProjectDto, { new: true })
       .populate('createdBy')
@@ -75,6 +82,7 @@ export class ProjectsService {
   }
 
   async remove(id: string) {
+    this.validateId(id);
     const deletedProject = await this.projectModel
       .findByIdAndDelete(id)
       .populate('createdBy')
@@ -96,5 +104,13 @@ export class ProjectsService {
 
   checkPersists(id: string) {
     return this.projectModel.findById(id).exec();
+  }
+
+  validateId(id: string) {
+    if (!ObjectIdPattern.test(id)) {
+      throw new BadRequestException({
+        message: ['id:The id is not valida'],
+      });
+    }
   }
 }

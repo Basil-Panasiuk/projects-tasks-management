@@ -1,6 +1,6 @@
 import { TaskResponseDto } from './task-response.dto';
 
-export class PaginatedTransactionsResponseDto {
+export class PaginatedTasksResponseDto {
   total_pages: number;
   total_tasks: number;
   count: number;

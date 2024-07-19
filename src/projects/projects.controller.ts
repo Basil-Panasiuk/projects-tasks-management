@@ -16,13 +16,50 @@ import { ValidationExeptionFilter } from 'src/common/filters/validation-exeption
 import { ActiveUser } from 'src/iam/decorators/active-user.decorator';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { IdParamDto } from 'src/common/dto/id-param.dto';
+import {
+  ApiCookieAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { ApiUnauthorizedResponseConfig } from 'src/iam/authentication/common/apiUnauthorizedResponse.config';
+import { PaginationValidationErrorsDto } from 'src/common/dto/pagination-validation-errors.dto';
+import { PaginatedProjectsResponseDto } from './dto/paginated-projects-response.dto';
 
+@ApiTags('projects')
+@ApiCookieAuth()
+@ApiResponse({
+  status: 401,
+  description: 'Unauthorized',
+  content: {
+    'application/json': {
+      examples: ApiUnauthorizedResponseConfig,
+    },
+  },
+})
 @Controller('projects')
 @UseFilters(new ValidationExeptionFilter('Validation failed'))
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
   @Post()
+  @ApiOperation({
+    summary: 'Create project',
+  })
+  @ApiResponse({
+    status: 422,
+    description: 'Error: Unprocessable Entity',
+    content: {
+      'application/json': {
+        example: {
+          message: 'Validation failed',
+          fails: {
+            name: ['The name field is required'],
+          },
+        },
+      },
+    },
+  })
   create(
     @Body() createProjectDto: CreateProjectDto,
     @ActiveUser('sub') userId: string,
@@ -31,13 +68,61 @@ export class ProjectsController {
   }
 
   @Get()
+  @ApiOperation({
+    summary: 'Get paginated projects',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'List of projects with pagination',
+    type: PaginatedProjectsResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Error: Not found',
+    content: {
+      'application/json': {
+        example: { message: 'Page not found' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 422,
+    description: 'Validation failed',
+    type: PaginationValidationErrorsDto,
+  })
   findAll(@Query() paginationQueryDto: PaginationQueryDto) {
     return this.projectsService.findAll(paginationQueryDto);
   }
 
   @Get(':id')
-  findOne(@Param() { id }: IdParamDto) {
-    return this.projectsService.findOne(id);
+  @ApiOperation({
+    summary: 'Get project',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Error: Not found',
+    content: {
+      'application/json': {
+        example: { message: 'Project with ID {id_value} not found' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 422,
+    description: 'Error: Unprocessable Entity',
+    content: {
+      'application/json': {
+        example: {
+          message: 'Validation failed',
+          fails: {
+            id: ['The ID is not valid'],
+          },
+        },
+      },
+    },
+  })
+  findOne(@Param() idParamDto: IdParamDto) {
+    return this.projectsService.findOne(idParamDto.id);
   }
 
   @Patch(':id')

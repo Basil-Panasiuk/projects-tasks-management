@@ -1,9 +1,6 @@
-import { Matches } from 'class-validator';
-import { ObjectIdPattern } from '../common.constants';
+import { IsNotEmpty } from 'class-validator';
 
 export class IdParamDto {
-  @Matches(ObjectIdPattern, {
-    message: 'id:The ID is not valid',
-  })
+  @IsNotEmpty({ message: 'id:The id param is required' })
   id: string;
 }

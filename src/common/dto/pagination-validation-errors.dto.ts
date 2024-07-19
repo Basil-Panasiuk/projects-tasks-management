@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-class ValidationDetails {
+class PaginationDetails {
   @ApiProperty({ example: ['The page must be an integer.'] })
   page?: string[];
 
@@ -12,6 +12,6 @@ export class PaginationValidationErrorsDto {
   @ApiProperty({ example: 'Validation failed' })
   message: string;
 
-  @ApiProperty({ type: ValidationDetails })
-  fails: ValidationDetails;
+  @ApiProperty({ type: PaginationDetails })
+  fails: PaginationDetails;
 }

@@ -15,9 +15,14 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { ActiveUser } from 'src/iam/decorators/active-user.decorator';
 import { ValidationExeptionFilter } from 'src/common/filters/validation-exeption.filter';
 import { FindAllTasksDto } from './dto/find-all-tasks.dto';
-import { ApiCookieAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCookieAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ApiUnauthorizedResponseConfig } from 'src/iam/authentication/common/apiUnauthorizedResponse.config';
-import { PaginatedTransactionsResponseDto } from './dto/paginated-tasks-response.dto';
+import { PaginatedTasksResponseDto } from './dto/paginated-tasks-response.dto';
 import { FindAllTasksValidationDto } from './dto/find-all-tasks-validation.dto';
 
 @ApiTags('tasks')
@@ -37,6 +42,9 @@ export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Post()
+  @ApiOperation({
+    summary: 'Create task',
+  })
   @ApiResponse({
     status: 422,
     description: 'Error: Unprocessable Entity',
@@ -61,10 +69,13 @@ export class TasksController {
   }
 
   @Get()
+  @ApiOperation({
+    summary: 'Get paginated filtered tasks',
+  })
   @ApiResponse({
     status: 200,
-    description: 'List of transactions with pagination',
-    type: PaginatedTransactionsResponseDto,
+    description: 'List of tasks with pagination',
+    type: PaginatedTasksResponseDto,
   })
   @ApiResponse({
     status: 404,
