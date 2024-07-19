@@ -126,6 +126,33 @@ export class ProjectsController {
   }
 
   @Patch(':id')
+  @ApiOperation({
+    summary: 'Update project',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Error: Not found',
+    content: {
+      'application/json': {
+        example: { message: 'Project with ID {id_value} not found' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 422,
+    description: 'Error: Unprocessable Entity',
+    content: {
+      'application/json': {
+        example: {
+          message: 'Validation failed',
+          fails: {
+            id: ['The ID is not valid'],
+            name: ['The name field cant be empty'],
+          },
+        },
+      },
+    },
+  })
   update(
     @Param() { id }: IdParamDto,
     @Body() updateProjectDto: UpdateProjectDto,
@@ -134,6 +161,32 @@ export class ProjectsController {
   }
 
   @Delete(':id')
+  @ApiOperation({
+    summary: 'Delete project',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Error: Not found',
+    content: {
+      'application/json': {
+        example: { message: 'Project with ID {id_value} not found' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 422,
+    description: 'Error: Unprocessable Entity',
+    content: {
+      'application/json': {
+        example: {
+          message: 'Validation failed',
+          fails: {
+            id: ['The ID is not valid'],
+          },
+        },
+      },
+    },
+  })
   remove(@Param() { id }: IdParamDto) {
     return this.projectsService.remove(id);
   }

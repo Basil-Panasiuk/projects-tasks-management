@@ -109,7 +109,7 @@ export class ProjectsService {
   validateId(id: string) {
     if (!ObjectIdPattern.test(id)) {
       throw new BadRequestException({
-        message: ['id:The id is not valida'],
+        message: ['id:The id is not valid'],
       });
     }
   }
