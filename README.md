@@ -5,6 +5,7 @@ Create .env file and copy everything from .env.example file.
 ## Running the app
 
 ```bash
+$ npm ci
 $ docker-compose up -d
 
 ```
