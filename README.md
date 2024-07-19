@@ -1,37 +1,21 @@
+## To run locally
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
-```
+Create .env file and copy everything from .env.example file.
 
 ## Running the app
 
 ```bash
-# development
-$ npm run start
+$ docker-compose up -d
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Test
+Then please wait until application startup
+You can check logs of api container to see app's initialization
 
 ```bash
-# unit tests
-$ npm run test
+$ docker-compose logs -f api
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
+Server available on localhost:3000.
+Swagger API docs available by adding /swagger to baseurl => localhost:3000/swagger

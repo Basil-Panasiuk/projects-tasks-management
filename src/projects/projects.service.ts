@@ -93,4 +93,8 @@ export class ProjectsService {
       createdBy: this.usersService.toUserResponseDto(project.createdBy),
     };
   }
+
+  checkPersists(id: string) {
+    return this.projectModel.findById(id).exec();
+  }
 }

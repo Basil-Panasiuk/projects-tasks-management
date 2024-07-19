@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { User } from './schemas/user.schema';
 import { UserResponseDto } from './dto/user-response.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -10,19 +10,8 @@ export class UsersService {
     @InjectModel(User.name) private readonly userModel: Model<User>,
   ) {}
 
-  async findOne(id: string) {
-    const user = await this.userModel.findById(id).exec();
-
-    if (!user) {
-      throw new NotFoundException({
-        message: `User #${id} not found`,
-      });
-    }
-    return user;
-  }
-
-  async findParticipants(ids: string[]) {
-    return this.userModel.find({ _id: { $in: ids } }).exec();
+  findOne(id: string) {
+    return this.userModel.findById(id).exec();
   }
 
   toUserResponseDto(user: User): UserResponseDto {

@@ -25,8 +25,8 @@ export class Task extends Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
   createdBy: User;
 
-  @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'User' })
-  assignedTo: User[];
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  assignedTo: User;
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

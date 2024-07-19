@@ -1,27 +1,22 @@
-import { IsString, IsNotEmpty, IsEnum, IsOptional } from 'class-validator';
-import { TaskStatus } from '../enums/task-status.enum';
+import { IsNotEmpty, IsOptional, Matches } from 'class-validator';
+import { ObjectIdPattern } from 'src/common/common.constants';
 
 export class CreateTaskDto {
-  @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'title:The title field is required' })
   title: string;
 
-  @IsString()
   @IsOptional()
   description?: string;
 
-  @IsEnum(TaskStatus)
-  @IsNotEmpty()
-  status: TaskStatus;
-
-  @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'project:The project field is required' })
+  @Matches(ObjectIdPattern, {
+    message: 'project:The project id is not valid',
+  })
   project: string;
 
-  @IsString()
-  @IsNotEmpty()
-  createdBy: string;
-
   @IsOptional()
-  assignedTo?: string[];
+  @Matches(ObjectIdPattern, {
+    message: 'assignedTo:The assigner id is not valid',
+  })
+  assignedTo?: string;
 }
